@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geo Information</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsivity.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/logo_worldInfo.webp">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js.js"></script>
+
+</head>   
+<body>    
+    <main id="home">
+
+        <img src="images/img2_worldInfo.jpeg" class="avatarImg" alt="person_who_searching_something_in_the_globe">
+
+        <div id="typeInfoChoice">
+
+            <img src="images/logo_worldInfo.webp" alt="logo_worldInfo">
+
+            <p>
+                Une façon d'explorer le monde sans bouger de votre maison.
+            </p>
+
+            <div id="contentButton">
+                <button id="country">Obtenir des renseignements sur un pays</button>
+                <button id="town">Obtenir des renseignements sur une ville</button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <div id="getInfoPart">
+
+        <header>
+            <a href=""><img src="images/logo_worldInfo.webp" alt="logo_worldInfo" width="100"></a>
+
+            <button id="comeBack">Retour a l'accueil</button>
+        </header>
+
+        <div id="searchDiv">
+
+            <h1></h1>
+
+            <div id="inputDiv">
+                <input type="text" id="inputValue" value="" required>
+                <button id="validate">Valider</button>
+            </div>
+        </div>
+
+        <div id="loadDiv">
+            <img src="images/load.gif" alt="loadImg">
+        </div>
+
+        <div id="notFound">
+
+            <img src="images/notFoundImg.png" alt="not_found_image" id="notFoundImg">
+
+            <strong>Désolé, le pays que vous avez indiqué n'a pas été trouvé. Veuillez vérifier l'orthographe et réessayer.</strong>
+
+        </div>
+
+        <div id="countryInfoDiv">
+
+            <div id="flagDiv">
+                <img src="" alt="" id="countryFlag">
+            </div>
+
+            <div id="countryInfo">
+                <div>
+                    <h2>Pays</h2>
+                    <span id="countryName"></span>
+                </div>
+
+                <div>
+                    <h2>Capitale</h2>
+                    <span id="capital"></span>
+                </div>
+
+                <div>
+                    <h2>Population</h2>
+                    <span id="population"></span>
+                </div>
+
+                <div>
+                    <h2>Superficie</h2>
+                    <span id="area"></span>
+                </div>
+
+                <div>
+                    <h2>Continent</h2>
+                    <span id="continent"></span>
+                </div>
+
+                <div>
+                    <h2>Sous-région</h2>
+                    <span id="subRegion"></span>
+                </div>
+
+                <div>
+                    <h2>Habitants</h2>
+                    <span id="residents"></span>
+                </div>
+
+                <div>
+                    <h2>Langue</h2>
+                    <span id="language"></span>
+                </div>
+
+                <div>
+                    <h2>Monnaie</h2>
+                    <span id="money"></span>
+                </div>
+
+                <div>
+                    <h2>Code téléphonique</h2>
+                    <span id="telCode" style="font-style: italic;"></span>
+                </div>
+
+                <!-- <div>
+                    <h2>Timezone <i>(Heure courante)</i></h2>
+                    <span id="timezone"></span>
+                </div> -->
+
+                <div>
+                    <h2>Google Maps</h2>
+                    <a href="" id="googleMapsLink" target="_blank">Voir google maps</a>
+                </div>
+
+                <div>
+                    <h2>Open Street Maps</h2>
+                    <a href="" id="osmLink" target="_blank">Voir open street maps</a>
+                </div>
+
+                <!-- <div>
+                    <h2>Pays limitrophes</h2>
+                    <span id="neighboringCountries"></span>
+                </div> -->
+
+                <div>
+                    <h2>TLD</h2>
+                    <span id="tld" style="font-style: italic;"></span>
+                </div>
+
+                <div>
+                    <h2>Armoirie</h2>
+                    <img src="" alt="coatOfArms" id="coatOfArms" width="150" height="150" style="margin-top: 15px;">
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/functions.js"></script>
+    <script src="js/index.js"></script>
+    
+</body>
+</html>
