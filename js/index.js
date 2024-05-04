@@ -3,6 +3,8 @@ $('#country').on('click', function(){
     $('#getInfoPart').fadeIn()
     $('#searchDiv h1').text("Entrer le pays")
     $('#validate').attr('value', 'country')
+    $('#countryInfoDiv').hide()
+    $('#inputValue').val("")
 })
 
 $('#town').on('click', function(){
@@ -10,6 +12,9 @@ $('#town').on('click', function(){
     $('#getInfoPart').fadeIn()
     $('#searchDiv h1').text("Entrer la ville")
     $('#validate').attr('value', 'town')
+    $('#countryInfoDiv').hide()
+    $('#countryInfoDiv').hide()
+    $('#inputValue').val("")
 }) 
 
 $('#comeBack').on('click', function(){
@@ -20,36 +25,34 @@ $('#comeBack').on('click', function(){
 
 $('#validate').on('click', function(){
 
-    let countryEntered = $('#inputValue').val()
-    let countryIsEmpty = false
+    let valueEntered = $('#inputValue').val()
+    let valueIsEmpty = false
     let country = ""
 
-    if(countryEntered == null || countryEntered == ""){
-
-        countryIsEmpty = true
+    if(valueEntered == null || valueEntered == ""){
+        valueIsEmpty = true
         $('#inputValue').css('border', '2px red solid')
-
     }
 
-    if(!countryIsEmpty){
+    if($(this).val() == "country"){
 
-        getContriesName(capitalizeFirstLetter(countryEntered))
-            .then(function(result) {
-                country = result
-                console.log(country);
-            })
-            .catch(function(error) {
-                console.error('Erreur:', error);
-            });
+        if(!valueIsEmpty){
 
-        $('#loadDiv').show()
-        $('#notFound').hide()
-        $('#notFound').css('display', 'none')
-        $('#inputValue').css('border', '1px #fff solid')
-        $('#countryInfoDiv').hide()
+            getContriesName(capitalizeFirstLetter(valueEntered))
+                .then(function(result) {
+                    country = result
+                    console.log(country);
+                })
+                .catch(function(error) {
+                    console.error('Erreur:', error);
+                });
+
+            $('#loadDiv').show()
+            $('#notFound').hide()
+            $('#notFound').css('display', 'none')
+            $('#inputValue').css('border', '1px #fff solid')
+            $('#countryInfoDiv').hide()
         
-        if($(this).val() == "country"){
-    
             $.ajax({
                 type:"GET",
                 dataType: "json",
@@ -120,7 +123,7 @@ $('#validate').on('click', function(){
                                         case 'Europe':
                                             continent += "Europe, "
                                             break;
-                                           
+                                        
                                         case 'Oceania':
                                             continent += "Océanie, "
                                             break;
@@ -179,7 +182,7 @@ $('#validate').on('click', function(){
                             $('#tld').text(tld)                        
                             $('#timezone').text(timezone)                        
 
-                                                   
+                                                
                         },
                         error:function(data)
                         {
@@ -192,14 +195,19 @@ $('#validate').on('click', function(){
                         }
                     });
                 },
-            });
-    
+            });            
+
         }
+
+    }
+
+
+    if($(this).val() == "town"){  
     
-        if($(this).val() == "town"){
-    
-            alert(inputValue)
-    
+        if(!valueIsEmpty){
+
+            alert(valueEntered)
+
         }
 
     }
