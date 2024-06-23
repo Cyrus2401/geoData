@@ -34,6 +34,7 @@ $('#validate').on('click', function(){
         $('#inputValue').css('border', '2px red solid')
     }
 
+    //GET COUNTRY INFORMATIONS
     if($(this).val() == "country"){
 
         if(!valueIsEmpty){
@@ -191,7 +192,9 @@ $('#validate').on('click', function(){
                             $('#loadDiv').hide()
                             $('#inputValue').val("")
                             $('#notFound').show()
-                            $('#notFound').css('display', 'flex')
+                            $('#notFound').css('display', 'flex') 
+                            $('.typeValue').text("le pays") 
+
                         }
                     });
                 },
@@ -201,12 +204,38 @@ $('#validate').on('click', function(){
 
     }
 
-
+    //GET CITY INFORMATIONS
     if($(this).val() == "town"){  
     
         if(!valueIsEmpty){
 
-            alert(valueEntered)
+            $('#loadDiv').show()
+            $('#notFound').hide()
+            $('#notFound').css('display', 'none')
+            $('#inputValue').css('border', '1px #fff solid')
+            $('#countryInfoDiv').hide()
+
+            $.ajax({
+                type:"GET",
+                dataType: "json",
+                url:"http://dataservice.accuweather.com/locations/v1/cities/search?apikey=qrGMsfb75G19v61zGcMeXZONOTsImEdt&q=" + valueEntered + "&language=fr-FR",
+                success:function(data)
+                {
+                    console.log(data)
+    
+                },
+                error:function(data)
+                {
+                    console.log(data)
+
+                    $('#loadDiv').hide()
+                    $('#inputValue').val("")
+                    $('#notFound').show()
+                    $('#notFound').css('display', 'flex')
+                    $('.typeValue').text("la ville") 
+
+                }
+            });
 
         }
 
