@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+25&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="images/logo_worldInfo.webp">
 
     <script src="js/jquery.min.js"></script>
@@ -19,147 +19,360 @@
 </head>   
 <body>    
     <main id="home">
-
         <img src="images/img2_worldInfo.jpeg" class="avatarImg" alt="person_who_searching_something_in_the_globe">
-
         <div id="typeInfoChoice">
-
             <img src="images/logo_worldInfo.webp" alt="logo_worldInfo">
-
-            <p>
-                Une façon d'explorer le monde sans bouger de votre maison.
-            </p>
-
+            <p>Une façon d'explorer le monde sans bouger de votre maison.</p>
             <div id="contentButton">
-                <button id="country">Obtenir des renseignements sur un pays</button>
-                <button id="town">Obtenir des renseignements sur une ville</button>
+                <button id="country">Renseignements sur un pays</button>
+                <button id="town">Renseignements sur une ville</button>
             </div>
-
         </div>
-
     </main>
 
     <div id="getInfoPart">
 
         <header>
-            <a href=""><img src="images/logo_worldInfo.webp" alt="logo_worldInfo" width="100"></a>
-
-            <button id="comeBack">Retour a l'accueil</button>
+            <a href="javascript:void(0)" onclick="location.reload()"><img src="images/logo_worldInfo.webp" alt="logo_worldInfo" width="80"></a>
+            <button id="comeBack">Retour à l'accueil</button>
         </header>
 
         <div id="searchDiv">
-
-            <h1></h1>
-
+            <h1 id="searchTitle">Rechercher un pays</h1>
+            <p id="searchSubtitle">Entrez le nom du pays</p>
             <div id="inputDiv">
-                <input type="text" id="inputValue" value="" required>
-                <button id="validate">Valider</button>
+                <input type="text" id="inputValue" placeholder="Ex : Bénin, Belgique, Chine..." autocomplete="off">
+                <button id="validate">Rechercher</button>
             </div>
         </div>
 
         <div id="loadDiv">
-            <img src="images/load.gif" alt="loadImg">
+            <div class="spinner"></div>
+            <p>Chargement…</p>
         </div>
 
         <div id="notFound">
-
             <img src="images/notFoundImg.png" alt="not_found_image" id="notFoundImg">
-
-            <strong>Désolé, <span class="typeValue"></span> que vous avez indiqué n'a pas été trouvé. Veuillez vérifier l'orthographe et réessayer.</strong>
-
+            <strong>Désolé, <span class="typeValue"></span> que vous avez indiqué n'a pas été trouvé.<br>Vérifiez l'orthographe et réessayez.</strong>
         </div>
 
         <div id="countryInfoDiv">
 
             <div id="flagDiv">
-                <img src="" alt="" id="countryFlag">
+                <img alt="" id="countryFlag">
             </div>
 
             <div id="countryInfo">
-                <div>
-                    <h2>Pays</h2>
-                    <span id="countryName"></span>
+
+                <!-- IDENTIFICATION -->
+                <div class="info-category">
+                    <h3 class="category-title">Identification du pays</h3>
+                    <div class="category-grid">
+                        <div class="info-item">
+                            <h2>Nom</h2>
+                            <span id="countryName"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Code ISO Alpha-2</h2>
+                            <span id="cca2"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Code ISO Alpha-3</h2>
+                            <span id="cca3"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Code FIFA</h2>
+                            <span id="fifaCode"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Extension web (TLD)</h2>
+                            <span id="tld"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Autres appellations</h2>
+                            <span id="altSpellings"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Pays indépendant</h2>
+                            <span id="independentStatus"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Membre de l'ONU</h2>
+                            <span id="unMemberStatus"></span>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <h2>Capitale</h2>
-                    <span id="capital"></span>
+                <!-- POLITIQUE & HISTOIRE -->
+                <div class="info-category" id="wikiSection" style="display:none;">
+                    <h3 class="category-title">Politique & Histoire</h3>
+                    <div class="category-grid">
+                        <div class="info-item">
+                            <h2>Type de régime</h2>
+                            <span id="wikiGovt" class="wiki-loading"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Chef d'État</h2>
+                            <span id="wikiHead" class="wiki-loading"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Chef du gouvernement</h2>
+                            <span id="wikiGov" class="wiki-loading"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Religion officielle</h2>
+                            <span id="wikiReligion" class="wiki-loading"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Date d'indépendance</h2>
+                            <span id="wikiIndependence" class="wiki-loading"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Hymne national</h2>
+                            <span id="wikiAnthem" class="wiki-loading"></span>
+                        </div>
+                        <div class="info-item info-item--full" id="wikiAnthemPlayer" style="display:none;">
+                            <h2>Écouter l'hymne</h2>
+                            <audio id="wikiAnthemAudio" controls preload="none" style="width:100%;margin-top:6px;"></audio>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <h2>Population</h2>
-                    <span id="population"></span>
+                <!-- GÉOGRAPHIE -->
+                <div class="info-category">
+                    <h3 class="category-title">Géographie</h3>
+                    <div class="category-grid">
+                        <div class="info-item">
+                            <h2>Continent</h2>
+                            <span id="continent"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Sous-région</h2>
+                            <span id="subRegion"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Capitale</h2>
+                            <span id="capital"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Superficie</h2>
+                            <span id="area"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Accès à la mer</h2>
+                            <span id="landlockedStatus"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Pays frontaliers</h2>
+                            <span id="neighboringCountries"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Coordonnées GPS</h2>
+                            <span id="gpsCoords"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Coordonnées de la capitale</h2>
+                            <span id="capitalCoords"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Fuseau horaire</h2>
+                            <span id="timezone"></span>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <h2>Superficie</h2>
-                    <span id="area"></span>
+                <!-- POPULATION & SOCIÉTÉ -->
+                <div class="info-category">
+                    <h3 class="category-title">Population & Société</h3>
+                    <div class="category-grid">
+                        <div class="info-item">
+                            <h2>Population</h2>
+                            <span id="population"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Densité</h2>
+                            <span id="density"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Gentilé (Habitant / Habitante)</h2>
+                            <span id="residents"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Langue(s) officielle(s)</h2>
+                            <span id="language"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Premier jour de la semaine</h2>
+                            <span id="startOfWeek"></span>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <h2>Continent</h2>
-                    <span id="continent"></span>
+                <!-- ÉCONOMIE -->
+                <div class="info-category">
+                    <h3 class="category-title">Économie</h3>
+                    <div class="category-grid">
+                        <div class="info-item">
+                            <h2>Monnaie</h2>
+                            <span id="money"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Indice de Gini (Inégalités)</h2>
+                            <span id="giniIndex"></span>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <h2>Sous-région</h2>
-                    <span id="subRegion"></span>
+                <!-- INFRASTRUCTURES -->
+                <div class="info-category">
+                    <h3 class="category-title">Infrastructures</h3>
+                    <div class="category-grid">
+                        <div class="info-item">
+                            <h2>Sens de conduite</h2>
+                            <span id="carSide"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Format code postal</h2>
+                            <span id="postalCode"></span>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <h2>Habitants</h2>
-                    <span id="residents"></span>
-                </div>
-
-                <div>
-                    <h2>Langue</h2>
-                    <span id="language"></span>
-                </div>
-
-                <div>
-                    <h2>Monnaie</h2>
-                    <span id="money"></span>
-                </div>
-
-                <div>
-                    <h2>Code téléphonique</h2>
-                    <span id="telCode" style="font-style: italic;"></span>
-                </div>
-
-                <!-- <div>
-                    <h2>Timezone <i>(Heure courante)</i></h2>
-                    <span id="timezone"></span>
-                </div> -->
-
-                <div>
-                    <h2>Google Maps</h2>
-                    <a href="" id="googleMapsLink" target="_blank">Voir google maps</a>
-                </div>
-
-                <div>
-                    <h2>Open Street Maps</h2>
-                    <a href="" id="osmLink" target="_blank">Voir open street maps</a>
-                </div>
-
-                <!-- <div>
-                    <h2>Pays limitrophes</h2>
-                    <span id="neighboringCountries"></span>
-                </div> -->
-
-                <div>
-                    <h2>TLD</h2>
-                    <span id="tld" style="font-style: italic;"></span>
-                </div>
-
-                <div>
-                    <h2>Armoirie</h2>
-                    <img src="" alt="coatOfArms" id="coatOfArms" width="150" height="150" style="margin-top: 15px;">
+                <!-- RELATIONS INTERNATIONALES -->
+                <div class="info-category">
+                    <h3 class="category-title">Relations internationales</h3>
+                    <div class="category-grid">
+                        <div class="info-item">
+                            <h2>Code téléphonique</h2>
+                            <span id="telCode"></span>
+                        </div>
+                        <div class="info-item">
+                            <h2>Armoirie nationale</h2>
+                            <img alt="Armoirie" id="coatOfArms" class="coatOfArmsImg">
+                        </div>
+                        <div class="info-item info-item--full">
+                            <h2>Google Maps</h2>
+                            <a href="#" id="googleMapsLink" target="_blank">Voir sur Google Maps</a>
+                        </div>
+                        <div class="info-item info-item--full">
+                            <h2>Open Street Maps</h2>
+                            <a href="#" id="osmLink" target="_blank">Voir sur Open Street Maps</a>
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div>
 
+    <!-- ===== SECTION VILLE ===== -->
+    <div id="townInfoDiv" style="display:none; padding-bottom: 60px; width:100%;">
+        
+        <div id="townInfo" style="width: 82%; margin: 40px auto 0; display: flex; flex-direction: column; gap: 16px;">
+            
+            <!-- IDENTIFICATION -->
+            <div class="info-category">
+                <h3 class="category-title">Identification de la ville</h3>
+                <div class="category-grid">
+                    <div class="info-item">
+                        <h2>Nom</h2>
+                        <span id="townName"></span>
+                    </div>
+                    <div class="info-item">
+                        <h2>Pays</h2>
+                        <span id="townCountry"></span>
+                    </div>
+                    <div class="info-item">
+                        <h2>Région / État / Département</h2>
+                        <span id="townState"></span>
+                    </div>
+                    <div class="info-item info-item--full">
+                        <h2>Description Courte (Wikipedia)</h2>
+                        <span id="townDescription" class="wiki-loading"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GÉOGRAPHIE & POPULATION -->
+            <div class="info-category">
+                <h3 class="category-title">Géographie & Population</h3>
+                <div class="category-grid">
+                    <div class="info-item">
+                        <h2>Coordonnées GPS</h2>
+                        <span id="townCoords"></span>
+                    </div>
+                    <div class="info-item">
+                        <h2>Fuseau horaire</h2>
+                        <span id="townTimezone"></span>
+                    </div>
+                    <div class="info-item">
+                        <h2>Heure actuelle</h2>
+                        <span id="townLocalTime"></span>
+                    </div>
+                    <div class="info-item">
+                        <h2>Population</h2>
+                        <span id="townPopulation" class="wiki-loading"></span>
+                    </div>
+                    <div class="info-item">
+                        <h2>Altitude</h2>
+                        <span id="townElevation" class="wiki-loading"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÉTÉO (Open-Meteo) -->
+            <div class="info-category">
+                <h3 class="category-title">Météo Actuelle</h3>
+                <div class="category-grid">
+                    <div class="info-item">
+                        <h2>Température</h2>
+                        <span id="townTemp"></span>
+                    </div>
+                    <div class="info-item">
+                        <h2>Conditions</h2>
+                        <span id="townWeather"></span>
+                    </div>
+                    <div class="info-item">
+                        <h2>Humidité</h2>
+                        <span id="townHumidity"></span>
+                    </div>
+                    <div class="info-item">
+                        <h2>Vent</h2>
+                        <span id="townWind"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARTE -->
+            <div class="info-category">
+                <h3 class="category-title">Carte & Liens utiles</h3>
+                <div class="category-grid">
+                    <div class="info-item info-item--full">
+                        <h2>OpenStreetMap</h2>
+                        <a href="#" id="townOsmLink" target="_blank">Voir sur la carte</a>
+                    </div>
+                    <div class="info-item info-item--full" id="townWikiLinkContainer" style="display:none;">
+                        <h2>Article détaillé</h2>
+                        <a href="#" id="townWikiLink" target="_blank">Lire l'article complet sur Wikipedia</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <span>Copyright © 2024 - <span id="current-year">2026</span>. Réalisé avec ❤️ par <a href="https://github.com/Cyrus2401" target="_blank" rel="noopener noreferrer">Cyrus2401</a>.</span>
+            <div class="footer-icons">
+                <a href="https://github.com/Cyrus2401/geoData" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" fill="currentColor"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/yao-cyrus-junior-hessou-b6a58122b/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" fill="currentColor"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
 
     <script src="js/functions.js"></script>
     <script src="js/index.js"></script>

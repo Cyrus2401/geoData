@@ -1,227 +1,180 @@
-@media only screen and (max-width: 1600px){
-    #contentButton{
-        width: 90%;
-    }
+/* ---- Labels (titre du champ) plus visibles ---- */
+.info-item h2 {
+    font-size: 0.67rem;
+    text-transform: uppercase;
+    color: #777;
+    letter-spacing: 0.9px;
+    margin-bottom: 4px;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
 }
 
-@media only screen and (max-width: 1500px){
-    #contentButton{
-        width: 95%;
-    }
-
-    button {
-        padding: 20px;
-    }
+.info-item span,
+.info-item a {
+    font-size: 0.97rem;
+    color: #111;
+    font-weight: 700;
+    line-height: 1.5;
+    word-break: break-word;
 }
 
-@media only screen and (max-width: 1400px){
-    #contentButton{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        gap: 25px;
-        width: 70%;
-    }
-
-    #countryInfo {
-        width: 60%;
-    }
+/* ---- Large desktop ---- */
+@media only screen and (max-width: 1400px) {
+    #countryInfo  { width: 88%; }
+    #inputDiv     { width: 58%; }
 }
 
-@media only screen and (max-width: 1300px){
-    #countryInfo {
-        width: 70%;
-    }
+@media only screen and (max-width: 1200px) {
+    #countryInfo  { width: 90%; }
+    #inputDiv     { width: 65%; }
 }
 
+/* ---- Tablet ---- */
 @media only screen and (max-width: 1000px) {
-    #contentButton{
-        width: 90%;
+    .avatarImg        { width: 40%; }
+    #typeInfoChoice   { width: 60%; }
+    #contentButton    { width: 90%; }
+
+    #searchTitle      { font-size: 1.1rem; }
+    #inputDiv         { width: 80%; }
+    #countryInfo      { width: 92%; }
+
+    #flagDiv img#countryFlag {
+        width: 28%;
+        max-width: 220px;
+    }
+}
+
+/* ---- Small tablet / large phone ---- */
+@media only screen and (max-width: 800px) {
+    /* Home : empilé */
+    main {
+        flex-direction: column;
+        height: auto;
     }
 
     .avatarImg {
-        width: 50%;
-    }
-
-    #typeInfoChoice {
-        width: 50%;
-    }
-
-    #searchDiv h1{
-        font-size: 30px;
-        letter-spacing: 1px;
-    }
-
-    #inputDiv{
-        width: 70%;
-    }
-
-    #notFound strong {
-        width: 70%;
-        text-align: center;
-        line-height: 30px;
-        margin-top: 1em;
-    }
-
-    #countryInfo {
-        width: 75%;
-    }
-}
-
-@media only screen and (max-width: 800px) {
-    main {
-        display: flex;
-        flex-direction: column;
         width: 100%;
-    }
-
-    .avatarImg{
-        width: 100%;
+        height: 45vh;
+        object-fit: cover;
     }
 
     #typeInfoChoice {
         width: 100%;
-        padding-bottom: 2em;
+        height: auto;
+        padding: 40px 24px 48px;
     }
 
-    #countryInfo {
-        width: 80%;
+    #typeInfoChoice img { width: 22%; }
+
+    #typeInfoChoice p {
+        font-size: 0.95rem;
+        width: 85%;
+        line-height: 1.7;
     }
+
+    #contentButton { width: 85%; }
+
+    /* Search */
+    #searchDiv    { padding: 22px 16px; gap: 8px; }
+    #searchTitle  { font-size: 1.05rem; }
+    #searchSubtitle { font-size: 0.8rem; }
+    #inputDiv     { width: 90%; }
+
+    /* Results */
+    #countryInfo  { width: 94%; }
+
+    #flagDiv      { padding: 28px 5% 16px; }
+    #flagDiv img#countryFlag {
+        width: 38%;
+        max-width: 200px;
+    }
+
+    /* Chaque item passe en pleine largeur */
+    .info-item { width: 100%; }
+    .info-item:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid #f3f3f3; }
+    .info-item:last-child { border-bottom: none; }
 }
 
-@media only screen and (max-width: 700px) {
-    #searchDiv{
-        padding: 1em;
-    }
-
-    #searchDiv h1{
-        font-size: 30px;
-        letter-spacing: 1px;
-    }
-
-    #inputDiv{
-        width: 80%;
-    }
-
-    #notFound strong {
-        width: 70%;
-        text-align: center;
-        line-height: 30px;
-        margin-top: 1em;
-    }
-
-    #notFound img {
-        width: 30%;
-    }
-
-    #countryInfo {
-        width: 90%;
-    }
-}
-
+/* ---- Phone ---- */
 @media only screen and (max-width: 600px) {
-    #countryInfo {
-        width: 90%;
+    /* Home */
+    .avatarImg { height: 38vh; }
+
+    #typeInfoChoice img { width: 30%; }
+
+    #typeInfoChoice p {
+        font-size: 0.88rem;
+        margin-bottom: 32px;
     }
 
-    #countryInfo h2 {
-        font-size: 17px;
+    button#country,
+    button#town { font-size: 0.92rem; padding: 15px; }
+
+    /* Header */
+    header { padding: 10px 16px; }
+    header img { width: 60px; }
+    header button {
+        padding: 6px 13px;
+        font-size: 0.8rem;
     }
 
-    #countryInfo span {
-        font-size: 15px;
+    /* Search */
+    #searchDiv    { padding: 18px 12px; }
+    #searchTitle  { font-size: 0.97rem; }
+    #inputDiv     { width: 96%; border-radius: 40px; }
+
+    #inputDiv input {
+        padding: 12px 16px;
+        font-size: 0.9rem;
     }
 
-    #countryInfo a {
-        font-size: 14px;
+    #validate {
+        padding: 11px 18px;
+        font-size: 0.88rem;
     }
 
-    #countryInfo div{
-        margin-bottom: 1.5em;
+    /* Results */
+    #countryInfo  { width: 96%; gap: 12px; }
+
+    #flagDiv      { padding: 22px 4% 12px; }
+    #flagDiv img#countryFlag {
+        width: 52%;
+        min-width: 110px;
     }
 
-    #countryInfo div:nth-child(2n){
-        text-align: right;
-    }
+    .category-title { font-size: 0.72rem; padding: 10px 16px; }
 
-    #countryInfo  img{
-        width: 80px;
-        height: 80px;
+    .info-item { padding: 11px 16px; }
+
+    .info-item h2   { font-size: 0.63rem; }
+    .info-item span,
+    .info-item a    { font-size: 0.9rem; }
+
+    #notFound       { padding: 50px 0; }
+    #notFound strong { font-size: 0.9rem; }
+
+    /* Footer Mobile */
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
     }
 }
 
-@media only screen and (max-width: 500px) {
-    main {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: auto;
-    }
-
-    .avatarImg{
-        width: 100%;
-        height: 100vh;
-    }
-
-    #typeInfoChoice {
-        height: auto;
-        width: 100%;
-        padding-bottom: 2em;
-        margin-top: 3em;
-    }
-
-    header{
-        padding: 10px 20px;
-    }
-    
-    header button{
-        padding: 0.5em;
-        font-size: 0.8em;
-    }
-
-    #inputDiv{
-        width: 90%;
-    }
-    
-    #inputDiv input{
-        padding: 10px;
-        border-radius: 25px;
-    }
-
-    #inputDiv button{
-        padding: 1px 8px;
-        font-size: 0.8em;
-    }
-
-    #notFound strong {
-        width: 90%;
-    }
-
-    #searchDiv h1{
-        font-size: 25px;
-    }
-
-    #countryInfo {
-        flex-direction: column;
-    }
-
-    #countryInfo div {
-        width: 100%;
-        margin-bottom: 1em;
-    }
-
-    #countryInfo div:nth-child(2n){
-        text-align: left;
-    }
-
-    #countryInfo  img{
-        width: 100px;
-        height: 100px;
-    }
-}
-
+/* ---- Small phone ---- */
 @media only screen and (max-width: 400px) {
-    button {
-        font-size: 0.7rem;
-    }
+    .avatarImg { height: 32vh; }
+
+    #typeInfoChoice p { font-size: 0.82rem; }
+
+    button#country,
+    button#town { font-size: 0.86rem; padding: 13px; }
+
+    #inputDiv     { width: 100%; border-radius: 0; }
+    #validate     { border-radius: 0; }
+
+    .info-item h2   { font-size: 0.6rem; }
+    .info-item span,
+    .info-item a    { font-size: 0.86rem; }
 }
