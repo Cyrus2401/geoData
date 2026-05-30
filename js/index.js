@@ -234,20 +234,21 @@ $('#validate').on('click', function(){
                             // Lancer Wikidata en arrière-plan (non bloquant)
                             loadWikidataInfo(cca2, countryName);
                         },
-                        error: function() {
-                            $('#loadDiv').hide()
-                            $('#inputValue').val("")
-                            $('#notFound').show().css('display', 'flex')
-                            $('.typeValue').text("le pays")
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error('REST Countries AJAX error:', textStatus, errorThrown, jqXHR);
+                            $('#loadDiv').hide();
+                            $('#inputValue').val("");
+                            $('#notFound').show().css('display', 'flex');
+                            $('.typeValue').text("le service distant (vérifiez votre connexion ou réessayez)");
                         }
                     });
                 })
                 .catch(function(error) {
                     console.error('Erreur:', error);
-                    $('#loadDiv').hide()
-                    $('#inputValue').val("")
-                    $('#notFound').show().css('display', 'flex')
-                    $('.typeValue').text("le pays")
+                    $('#loadDiv').hide();
+                    $('#inputValue').val("");
+                    $('#notFound').show().css('display', 'flex');
+                    $('.typeValue').text("le service distant (vérifiez votre connexion ou réessayez)");
                 });
         }
     }

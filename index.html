@@ -16,17 +16,19 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-3.7.1.min.js.js"></script>
 
-    <!-- Vercel Analytics -->
-    <script>
+    <!-- Vercel Analytics disabled for local development -->
+    <!-- <script>
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
-    <script defer src="/_vercel/insights/script.js"></script>
+    <script defer src="/_vercel/insights/script.js"></script> -->
 </head>   
 <body>    
     <main id="home">
         <img src="images/img2_worldInfo.jpeg" class="avatarImg" alt="person_who_searching_something_in_the_globe">
         <div id="typeInfoChoice">
-            <img src="images/logo_worldInfo.webp" alt="logo_worldInfo">
+            <a href="javascript:void(0)" onclick="location.reload()">
+                <img src="images/logo_worldInfo.webp" alt="logo_worldInfo">
+            </a>
             <p>Une façon d'explorer le monde sans bouger de votre maison.</p>
             <div id="contentButton">
                 <button id="country">Renseignements sur un pays</button>
@@ -287,7 +289,7 @@
                         <span id="townCountry"></span>
                     </div>
                     <div class="info-item">
-                        <h2>Région / État / Département</h2>
+                        <h2>Région / État / Département</h2>fix tout pou
                         <span id="townState"></span>
                     </div>
                     <div class="info-item info-item--full">
