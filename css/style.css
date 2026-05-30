@@ -39,9 +39,16 @@ main {
     z-index: 2;
 }
 
-#typeInfoChoice img {
+#typeInfoChoice a {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+#typeInfoChoice a img {
     width: 28%;
-    margin-bottom: 32px;
+    margin: 0 auto 32px;
+    display: block;
 }
 
 #typeInfoChoice p {
