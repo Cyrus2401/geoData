@@ -106,8 +106,8 @@ $('#validate').on('click', function(){
                         $.each(data, function(k, value) {
 
                             // Identification
-                            flagLink          = value.flags?.svg || value.flags?.png || '';
-                            flagDesc          = value.flags?.alt || '';
+                            flagLink          = value.flags?.svg || value.flags?.png || (value.cca2 ? `https://flagcdn.com/${value.cca2.toLowerCase()}.svg` : '');
+                            flagDesc          = value.flags?.alt || (value.cca2 ? `Drapeau de ${value.translations?.fra?.common || value.name?.common || ''}` : '');
                             countryName       = value.translations?.fra?.common || value.name?.common || 'N/A';
                             cca2              = value.cca2 || 'N/A';
                             cca3              = value.cca3 || 'N/A';
