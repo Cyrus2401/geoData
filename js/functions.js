@@ -1,3 +1,7 @@
+function loadCountriesData() {
+    return Promise.resolve(typeof countriesDataStore !== 'undefined' ? countriesDataStore : []);
+}
+
 /**
  * Normalise un texte : retire les accents pour la recherche de fallback
  */
@@ -6,40 +10,65 @@ function removeAccents(str) {
 }
 
 function getContriesName(country) {
-    const encoded = encodeURIComponent(country);
-
-    return $.ajax({ url: 'https://restcountries.com/v3.1/translation/' + encoded, method: 'GET', dataType: 'json' })
+    return loadCountriesData()
         .then(function(data) {
-            if (data && data.length > 0) return data[0].name.common;
+            if (!data || !Array.isArray(data)) return null;
+
+            const query = country.trim().toLowerCase();
+            const queryNorm = removeAccents(query);
+
+            // Helper to check if a name matches
+            function matches(nameObj) {
+                if (!nameObj) return false;
+                if (nameObj.common && removeAccents(nameObj.common.toLowerCase()) === queryNorm) return true;
+                if (nameObj.official && removeAccents(nameObj.official.toLowerCase()) === queryNorm) return true;
+                return false;
+            }
+
+            // 1. Search in translations
+            for (let c of data) {
+                if (c.translations) {
+                    for (let lang in c.translations) {
+                        if (matches(c.translations[lang])) {
+                            return c.name.common;
+                        }
+                    }
+                }
+            }
+
+            // 2. Search in common/official names and native names
+            for (let c of data) {
+                if (matches(c.name)) {
+                    return c.name.common;
+                }
+                if (c.name.native) {
+                    for (let lang in c.name.native) {
+                        if (matches(c.name.native[lang])) {
+                            return c.name.common;
+                        }
+                    }
+                }
+            }
+
+            // 3. Search in altSpellings
+            for (let c of data) {
+                if (c.altSpellings) {
+                    for (let alt of c.altSpellings) {
+                        if (removeAccents(alt.toLowerCase()) === queryNorm) {
+                            return c.name.common;
+                        }
+                    }
+                }
+            }
+
             return null;
         })
-        .catch(function() {
-            return $.ajax({ url: 'https://restcountries.com/v3.1/name/' + encoded, method: 'GET', dataType: 'json' })
-                .then(function(data) {
-                    if (data && data.length > 0) return data[0].name.common;
-                    return null;
-                })
-                .catch(function() {
-                    const normalized = removeAccents(country);
-                    if (normalized === country) return null;
-
-                    const encodedNorm = encodeURIComponent(normalized);
-                    return $.ajax({ url: 'https://restcountries.com/v3.1/translation/' + encodedNorm, method: 'GET', dataType: 'json' })
-                        .then(function(data) {
-                            if (data && data.length > 0) return data[0].name.common;
-                            return null;
-                        })
-                        .catch(function() {
-                            return $.ajax({ url: 'https://restcountries.com/v3.1/name/' + encodedNorm, method: 'GET', dataType: 'json' })
-                                .then(function(data) {
-                                    if (data && data.length > 0) return data[0].name.common;
-                                    return null;
-                                })
-                                .catch(function() { return null; });
-                        });
-                });
+        .catch(function(err) {
+            console.error("Error loading or processing countries database:", err);
+            return null;
         });
 }
+
 
 function capitalizeFirstLetter(string) {
     if (string && typeof string === 'string') {
