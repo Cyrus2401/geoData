@@ -73,174 +73,172 @@ $('#validate').on('click', function(){
                         return
                     }
 
-                    $.ajax({
-                        type: "GET",
-                        dataType: "json",
-                        url: "https://restcountries.com/v3.1/name/" + encodeURIComponent(country) + "?fullText=true",
-                        success: function(data) {
-                            console.log(data)
-
+                    return loadCountriesData().then(function(dataList) {
+                        const countryObj = dataList.find(c => c.name.common === country);
+                        if (!countryObj) {
                             $('#loadDiv').hide()
-                            $('#notFound').hide().css('display', 'none')
-                            $('#countryInfoDiv').show()
+                            $('#inputValue').val("")
+                            $('#notFound').show().css('display', 'flex')
+                            $('.typeValue').text("le pays")
+                            return;
+                        }
 
-                            // --- Variables ---
-                            let flagLink = "", flagDesc = "";
-                            let countryName = "", capital = "", continent = "", subRegion = "";
-                            let population = "", residents = "", language = "", money = "";
-                            let neighboringCountries = "", coatOfArmsUrl = "";
-                            let googleMapsLink = "", osmLink = "";
-                            let area = "", telCode = "", tld = "", timezone = "";
-                            let carSide = "", independentStatus = "", unMemberStatus = "";
-                            let landlockedStatus = "", startOfWeek = "";
-                            let gpsCoords = "", fifaCode = "", giniIndex = "", altSpellings = "";
-                            let cca2 = "", cca3 = "";
-                            let capitalCoords = "", postalCode = "", density = "";
+                        const data = [countryObj];
+                        console.log(data)
 
-                            $.each(data, function(k, value) {
+                        $('#loadDiv').hide()
+                        $('#notFound').hide().css('display', 'none')
+                        $('#countryInfoDiv').show()
 
-                                // Identification
-                                flagLink          = value.flags?.svg || value.flags?.png || '';
-                                flagDesc          = value.flags?.alt || '';
-                                countryName       = value.translations?.fra?.common || value.name?.common || 'N/A';
-                                cca2              = value.cca2 || 'N/A';
-                                cca3              = value.cca3 || 'N/A';
-                                fifaCode          = value.fifa || 'N/A';
-                                independentStatus = value.independent ? 'Oui' : 'Non';
-                                unMemberStatus    = value.unMember ? 'Oui' : 'Non';
-                                tld               = (value.tld && value.tld.length > 0) ? value.tld.join(', ') : 'N/A';
-                                altSpellings      = (value.altSpellings && value.altSpellings.length > 0) ? value.altSpellings.join(', ') : 'N/A';
+                        // --- Variables ---
+                        let flagLink = "", flagDesc = "";
+                        let countryName = "", capital = "", continent = "", subRegion = "";
+                        let population = "", residents = "", language = "", money = "";
+                        let neighboringCountries = "", coatOfArmsUrl = "";
+                        let googleMapsLink = "", osmLink = "";
+                        let area = "", telCode = "", tld = "", timezone = "";
+                        let carSide = "", independentStatus = "", unMemberStatus = "";
+                        let landlockedStatus = "", startOfWeek = "";
+                        let gpsCoords = "", fifaCode = "", giniIndex = "", altSpellings = "";
+                        let cca2 = "", cca3 = "";
+                        let capitalCoords = "", postalCode = "", density = "";
 
-                                // Géographie
-                                $.each(value.continents, function(k, val) {
-                                    const map = { Africa: 'Afrique', Americas: 'Amériques', Asia: 'Asie', Europe: 'Europe', Oceania: 'Océanie' };
-                                    continent += (map[val] || 'Antarctique') + ', ';
-                                });
-                                continent        = continent.replace(/,\s*$/, '') || 'N/A';
-                                subRegion        = value.subregion || 'N/A';
-                                capital          = (value.capital && value.capital.length > 0) ? value.capital.join(', ') : 'N/A';
-                                area             = value.area ? value.area.toLocaleString('fr-FR') + ' km²' : 'N/A';
-                                landlockedStatus = value.landlocked ? 'Non (sans accès à la mer)' : 'Oui (accès à la mer)';
-                                $.each(value.borders, function(k, val) { neighboringCountries += val + ', '; });
-                                neighboringCountries = neighboringCountries.replace(/,\s*$/, '') || 'Aucun';
-                                gpsCoords        = value.latlng ? value.latlng[0] + '°, ' + value.latlng[1] + '°' : 'N/A';
-                                capitalCoords    = value.capitalInfo?.latlng ? value.capitalInfo.latlng[0] + '°, ' + value.capitalInfo.latlng[1] + '°' : 'N/A';
-                                timezone         = (value.timezones && value.timezones.length > 0) ? value.timezones.join(', ') : 'N/A';
-
-                                // Population & Société
-                                population = value.population ? value.population.toLocaleString('fr-FR') + ' habitants' : 'N/A';
-                                density    = (value.population && value.area) ? (value.population / value.area).toFixed(1) + ' hab/km²' : 'N/A';
-                                residents  = (value.demonyms?.fra?.m && value.demonyms?.fra?.f) ? value.demonyms.fra.m + ' / ' + value.demonyms.fra.f : 'N/A';
-                                $.each(value.languages, function(k, val) { language += val + ', '; });
-                                language = language.replace(/,\s*$/, '') || 'N/A';
-
-                                switch (value.startOfWeek) {
-                                    case 'monday':    startOfWeek = 'Lundi'; break;
-                                    case 'tuesday':   startOfWeek = 'Mardi'; break;
-                                    case 'wednesday': startOfWeek = 'Mercredi'; break;
-                                    case 'thursday':  startOfWeek = 'Jeudi'; break;
-                                    case 'friday':    startOfWeek = 'Vendredi'; break;
-                                    case 'saturday':  startOfWeek = 'Samedi'; break;
-                                    case 'sunday':    startOfWeek = 'Dimanche'; break;
-                                    default:          startOfWeek = value.startOfWeek || 'N/A';
-                                }
-
-                                // Économie
-                                $.each(value.currencies, function(code, val) {
-                                    money += val.name + (val.symbol ? ' (' + val.symbol + ')' : '') + ', ';
-                                });
-                                money = money.replace(/,\s*$/, '') || 'N/A';
-
-                                if (value.gini && Object.keys(value.gini).length > 0) {
-                                    const year = Object.keys(value.gini)[0];
-                                    giniIndex = value.gini[year] + ' / 100 (relevé en ' + year + ')';
-                                } else {
-                                    giniIndex = 'N/A';
-                                }
-
-                                // Infrastructures
-                                carSide    = value.car?.side === 'right' ? 'Droite' : (value.car?.side === 'left' ? 'Gauche' : 'N/A');
-                                postalCode = value.postalCode?.format ? value.postalCode.format : 'N/A';
-
-                                // Liens & médias
-                                coatOfArmsUrl  = value.coatOfArms?.svg || value.coatOfArms?.png || '';
-                                googleMapsLink = value.maps?.googleMaps || '#';
-                                osmLink        = value.maps?.openStreetMaps || '#';
-
-                                // Téléphonique
-                                if (value.idd?.root) {
-                                    if (value.idd.suffixes && value.idd.suffixes.length > 0) {
-                                        $.each(value.idd.suffixes, function(k, d) { telCode += value.idd.root + d + ', '; });
-                                        telCode = telCode.replace(/,\s*$/, '');
-                                    } else {
-                                        telCode = value.idd.root;
-                                    }
-                                } else {
-                                    telCode = 'N/A';
-                                }
-                            });
-
-                            // Drapeau
-                            $('#countryFlag').attr('src', flagLink).attr('alt', flagDesc);
-
-                            // Armoirie
-                            if (coatOfArmsUrl) {
-                                $('#coatOfArms').attr('src', coatOfArmsUrl).show();
-                            } else {
-                                $('#coatOfArms').closest('.info-item').hide();
-                            }
+                        $.each(data, function(k, value) {
 
                             // Identification
-                            $('#countryName').text(countryName);
-                            $('#cca2').text(cca2);
-                            $('#cca3').text(cca3);
-                            $('#fifaCode').text(fifaCode);
-                            $('#tld').text(tld);
-                            $('#altSpellings').text(altSpellings);
-                            $('#independentStatus').text(independentStatus);
-                            $('#unMemberStatus').text(unMemberStatus);
+                            flagLink          = value.flags?.svg || value.flags?.png || '';
+                            flagDesc          = value.flags?.alt || '';
+                            countryName       = value.translations?.fra?.common || value.name?.common || 'N/A';
+                            cca2              = value.cca2 || 'N/A';
+                            cca3              = value.cca3 || 'N/A';
+                            fifaCode          = value.fifa || 'N/A';
+                            independentStatus = value.independent ? 'Oui' : 'Non';
+                            unMemberStatus    = value.unMember ? 'Oui' : 'Non';
+                            tld               = (value.tld && value.tld.length > 0) ? value.tld.join(', ') : 'N/A';
+                            altSpellings      = (value.altSpellings && value.altSpellings.length > 0) ? value.altSpellings.join(', ') : 'N/A';
 
                             // Géographie
-                            $('#continent').text(continent);
-                            $('#subRegion').text(subRegion);
-                            $('#capital').text(capital);
-                            $('#area').text(area);
-                            $('#landlockedStatus').text(landlockedStatus);
-                            $('#neighboringCountries').text(neighboringCountries);
-                            $('#gpsCoords').text(gpsCoords);
-                            $('#capitalCoords').text(capitalCoords);
-                            $('#timezone').text(timezone);
+                            $.each(value.continents, function(k, val) {
+                                const map = { Africa: 'Afrique', Americas: 'Amériques', Asia: 'Asie', Europe: 'Europe', Oceania: 'Océanie' };
+                                continent += (map[val] || 'Antarctique') + ', ';
+                            });
+                            continent        = continent.replace(/,\s*$/, '') || 'N/A';
+                            subRegion        = value.subregion || 'N/A';
+                            capital          = (value.capital && value.capital.length > 0) ? value.capital.join(', ') : 'N/A';
+                            area             = value.area ? value.area.toLocaleString('fr-FR') + ' km²' : 'N/A';
+                            landlockedStatus = value.landlocked ? 'Non (sans accès à la mer)' : 'Oui (accès à la mer)';
+                            $.each(value.borders, function(k, val) { neighboringCountries += val + ', '; });
+                            neighboringCountries = neighboringCountries.replace(/,\s*$/, '') || 'Aucun';
+                            gpsCoords        = value.latlng ? value.latlng[0] + '°, ' + value.latlng[1] + '°' : 'N/A';
+                            capitalCoords    = value.capitalInfo?.latlng ? value.capitalInfo.latlng[0] + '°, ' + value.capitalInfo.latlng[1] + '°' : 'N/A';
+                            timezone         = (value.timezones && value.timezones.length > 0) ? value.timezones.join(', ') : 'N/A';
 
-                            // Population
-                            $('#population').text(population);
-                            $('#density').text(density);
-                            $('#residents').text(residents);
-                            $('#language').text(language);
-                            $('#startOfWeek').text(startOfWeek);
+                            // Population & Société
+                            population = value.population ? value.population.toLocaleString('fr-FR') + ' habitants' : 'N/A';
+                            density    = (value.population && value.area) ? (value.population / value.area).toFixed(1) + ' hab/km²' : 'N/A';
+                            residents  = (value.demonyms?.fra?.m && value.demonyms?.fra?.f) ? value.demonyms.fra.m + ' / ' + value.demonyms.fra.f : 'N/A';
+                            $.each(value.languages, function(k, val) { language += val + ', '; });
+                            language = language.replace(/,\s*$/, '') || 'N/A';
+
+                            switch (value.startOfWeek) {
+                                case 'monday':    startOfWeek = 'Lundi'; break;
+                                case 'tuesday':   startOfWeek = 'Mardi'; break;
+                                case 'wednesday': startOfWeek = 'Mercredi'; break;
+                                case 'thursday':  startOfWeek = 'Jeudi'; break;
+                                case 'friday':    startOfWeek = 'Vendredi'; break;
+                                case 'saturday':  startOfWeek = 'Samedi'; break;
+                                case 'sunday':    startOfWeek = 'Dimanche'; break;
+                                default:          startOfWeek = value.startOfWeek || 'N/A';
+                            }
 
                             // Économie
-                            $('#money').text(money);
-                            $('#giniIndex').text(giniIndex);
+                            $.each(value.currencies, function(code, val) {
+                                money += val.name + (val.symbol ? ' (' + val.symbol + ')' : '') + ', ';
+                            });
+                            money = money.replace(/,\s*$/, '') || 'N/A';
+
+                            if (value.gini && Object.keys(value.gini).length > 0) {
+                                const year = Object.keys(value.gini)[0];
+                                giniIndex = value.gini[year] + ' / 100 (relevé en ' + year + ')';
+                            } else {
+                                giniIndex = 'N/A';
+                            }
 
                             // Infrastructures
-                            $('#carSide').text(carSide);
-                            $('#postalCode').text(postalCode);
+                            carSide    = value.car?.side === 'right' ? 'Droite' : (value.car?.side === 'left' ? 'Gauche' : 'N/A');
+                            postalCode = value.postalCode?.format ? value.postalCode.format : 'N/A';
 
-                            // Relations internationales
-                            $('#telCode').text(telCode);
-                            $('#googleMapsLink').attr('href', googleMapsLink).text(countryName + " sur Google Maps");
-                            $('#osmLink').attr('href', osmLink).text(countryName + ' sur Open Street Maps');
+                            // Liens & médias
+                            coatOfArmsUrl  = value.coatOfArms?.svg || value.coatOfArms?.png || '';
+                            googleMapsLink = value.maps?.googleMaps || '#';
+                            osmLink        = value.maps?.openStreetMaps || '#';
 
-                            // Lancer Wikidata en arrière-plan (non bloquant)
-                            loadWikidataInfo(cca2, countryName);
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            console.error('REST Countries AJAX error:', textStatus, errorThrown, jqXHR);
-                            $('#loadDiv').hide();
-                            $('#inputValue').val("");
-                            $('#notFound').show().css('display', 'flex');
-                            $('.typeValue').text("le service distant (vérifiez votre connexion ou réessayez)");
+                            // Téléphonique
+                            if (value.idd?.root) {
+                                if (value.idd.suffixes && value.idd.suffixes.length > 0) {
+                                    $.each(value.idd.suffixes, function(k, d) { telCode += value.idd.root + d + ', '; });
+                                    telCode = telCode.replace(/,\s*$/, '');
+                                } else {
+                                    telCode = value.idd.root;
+                                }
+                            } else {
+                                telCode = 'N/A';
+                            }
+                        });
+
+                        // Drapeau
+                        $('#countryFlag').attr('src', flagLink).attr('alt', flagDesc);
+
+                        // Armoirie
+                        if (coatOfArmsUrl) {
+                            $('#coatOfArms').attr('src', coatOfArmsUrl).show();
+                        } else {
+                            $('#coatOfArms').closest('.info-item').hide();
                         }
+
+                        // Identification
+                        $('#countryName').text(countryName);
+                        $('#cca2').text(cca2);
+                        $('#cca3').text(cca3);
+                        $('#fifaCode').text(fifaCode);
+                        $('#tld').text(tld);
+                        $('#altSpellings').text(altSpellings);
+                        $('#independentStatus').text(independentStatus);
+                        $('#unMemberStatus').text(unMemberStatus);
+
+                        // Géographie
+                        $('#continent').text(continent);
+                        $('#subRegion').text(subRegion);
+                        $('#capital').text(capital);
+                        $('#area').text(area);
+                        $('#landlockedStatus').text(landlockedStatus);
+                        $('#neighboringCountries').text(neighboringCountries);
+                        $('#gpsCoords').text(gpsCoords);
+                        $('#capitalCoords').text(capitalCoords);
+                        $('#timezone').text(timezone);
+
+                        // Population
+                        $('#population').text(population);
+                        $('#density').text(density);
+                        $('#residents').text(residents);
+                        $('#language').text(language);
+                        $('#startOfWeek').text(startOfWeek);
+
+                        // Économie
+                        $('#money').text(money);
+                        $('#giniIndex').text(giniIndex);
+
+                        // Infrastructures
+                        $('#carSide').text(carSide);
+                        $('#postalCode').text(postalCode);
+
+                        // Relations internationales
+                        $('#telCode').text(telCode);
+                        $('#googleMapsLink').attr('href', googleMapsLink).text(countryName + " sur Google Maps");
+                        $('#osmLink').attr('href', osmLink).text(countryName + ' sur Open Street Maps');
+
+                        // Lancer Wikidata en arrière-plan (non bloquant)
+                        loadWikidataInfo(cca2, countryName);
                     });
                 })
                 .catch(function(error) {
